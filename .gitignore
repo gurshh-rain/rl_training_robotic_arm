@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.zip
+MUJOCO_LOG.TXT
+.ipynb_checkpoints/
+.vscode/
+.idea/
