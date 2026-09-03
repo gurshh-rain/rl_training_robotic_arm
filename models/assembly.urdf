@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="assembly">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="1.32123743769437 -0.900404530174205 0.681863566681437"
+        rpy="0 0 0" />
+      <mass
+        value="0.136562621257405" />
+      <inertia
+        ixx="0.000100163559308627"
+        ixy="-9.33579893764603E-08"
+        ixz="8.36299379232976E-10"
+        iyy="0.0001885318533397"
+        iyz="-1.38145480653438E-08"
+        izz="0.000104093174499662" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://assembly/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://assembly/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="lower_arm">
+    <inertial>
+      <origin
+        xyz="0.0303299206109355 -0.00260215013459442 0.0367362208851532"
+        rpy="0 0 0" />
+      <mass
+        value="0.0546051991114324" />
+      <inertia
+        ixx="1.06861466850166E-05"
+        ixy="2.72835385679488E-11"
+        ixz="1.43942147727215E-06"
+        iyy="1.85359351043574E-05"
+        iyz="6.68762642347971E-08"
+        izz="1.44788495229488E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://assembly/meshes/lower_arm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://assembly/meshes/lower_arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lower_link"
+    type="revolute">
+    <origin
+      xyz="1.2937 -0.93385 0.68188"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lower_arm" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.5708"
+      upper="1.5708"
+      effort="1"
+      velocity="1" />
+  </joint>
+  <link
+    name="upper_arm">
+    <inertial>
+      <origin
+        xyz="0.0022051717223639 0.0227016795062744 0.0564719988742379"
+        rpy="0 0 0" />
+      <mass
+        value="0.0704330196764084" />
+      <inertia
+        ixx="9.9218187729957E-05"
+        ixy="1.76209486571653E-07"
+        ixz="-3.24384353707808E-06"
+        iyy="9.0835643781078E-05"
+        iyz="4.51252926308889E-06"
+        izz="1.62736258225927E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://assembly/meshes/upper_arm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://assembly/meshes/upper_arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="upper_link"
+    type="revolute">
+    <origin
+      xyz="0.028367 -0.026145 0.060445"
+      rpy="0 0 0" />
+    <parent
+      link="lower_arm" />
+    <child
+      link="upper_arm" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-1.5708"
+      upper="1.5708"
+      effort="1"
+      velocity="1" />
+  </joint>
+</robot>

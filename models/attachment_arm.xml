@@ -1,0 +1,43 @@
+<mujoco model="attachment_two_link_arm">
+  <compiler angle="radian" autolimits="true" balanceinertia="true"/>
+  <option timestep="0.001" gravity="0 0 -9.81" iterations="100" integrator="implicitfast"/>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.1 0.1 0.1" rgb2="0.95 0.95 0.95"/>
+    <material name="grid_mat" texture="grid" texrepeat="10 10" reflectance="0.1"/>
+    <material name="robot_mat" rgba="0.894 0.894 0.894 1"/>
+    <material name="tip_mat" rgba="0.1 0.8 0.2 1"/>
+    <mesh name="base_mesh" file="base_link.STL"/>
+    <mesh name="lower_arm_mesh" file="lower_arm.STL"/>
+    <mesh name="upper_arm_mesh" file="upper_arm.STL"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="5 5 0.1" material="grid_mat" friction="2.0 0.005 0.0001"/>
+
+    <body name="base" pos="0 0 0">
+      <freejoint name="base_free"/>
+      <inertial pos="0.0275374 0.0334455 -0.0000164" mass="0.136563" diaginertia="0.000100164 0.000188532 0.000104093"/>
+      <geom name="base_geom" type="mesh" mesh="base_mesh" pos="-1.2937 0.93385 -0.68188" material="robot_mat" contype="0" conaffinity="0"/>
+      <geom name="base_collision" type="box" pos="0.027 0.0145 0" size="0.055 0.032 0.055" rgba="0 0 0 0" friction="2.0 0.005 0.0001"/>
+
+      <body name="lower_arm" pos="0 0 0" euler="1.5708 0 0">
+        <joint name="lower_link" type="hinge" axis="1 0 0" range="-1.5708 1.5708" damping="0.02" armature="0.001"/>
+        <inertial pos="0.0303299 -0.00260215 0.0367362" mass="0.0546052" diaginertia="0.0000106861 0.0000185359 0.0000144788"/>
+        <geom name="lower_arm_geom" type="mesh" mesh="lower_arm_mesh" material="robot_mat" friction="0.8 0.005 0.0001"/>
+
+        <body name="upper_arm" pos="0.028367 -0.026145 0.060445">
+          <joint name="upper_link" type="hinge" axis="0 1 0" range="-1.5708 1.5708" damping="0.02" armature="0.001"/>
+          <inertial pos="0.00220517 0.0227017 0.056472" mass="0.070433" diaginertia="0.0000992182 0.0000908356 0.0000162736"/>
+          <geom name="upper_arm_geom" type="mesh" mesh="upper_arm_mesh" material="robot_mat" friction="0.8 0.005 0.0001"/>
+          <geom name="ee_tip_geom" type="sphere" size="0.008" pos="0 0 0.12" rgba="0 0 0 0" mass="0.002" friction="2.0 0.005 0.0001"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="lower_link_servo" joint="lower_link" ctrlrange="-1.5708 1.5708" forcerange="-1 1" kp="8" kv="0.3"/>
+    <position name="upper_link_servo" joint="upper_link" ctrlrange="-1.5708 1.5708" forcerange="-1 1" kp="8" kv="0.3"/>
+  </actuator>
+</mujoco>

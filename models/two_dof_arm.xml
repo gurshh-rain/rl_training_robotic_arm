@@ -1,0 +1,56 @@
+<mujoco model="two_dof_single_arm">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.001" gravity="0 0 -9.81" iterations="100" integrator="implicitfast"/>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.1 0.1 0.1" rgb2="0.95 0.95 0.95"/>
+    <material name="grid_mat" texture="grid" texrepeat="10 10" reflectance="0.1"/>
+    <material name="dark_grey" rgba="0.2 0.2 0.2 1"/>
+    <material name="arm_grey" rgba="0.45 0.5 0.55 1"/>
+    <material name="bracket_grey" rgba="0.7 0.73 0.76 1"/>
+    <material name="servo_black" rgba="0.08 0.08 0.08 1"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="5 5 0.1" material="grid_mat" friction="2.0 0.005 0.0001"/>
+
+    <body name="base" pos="0 0 0">
+      <joint name="base_free" type="free" damping="1.0" armature="0.01"/>
+      <geom name="base_geom" type="box" size="0.15 0.15 0.04" pos="0 0 0.04" material="dark_grey" mass="3.0" friction="2.0 0.005 0.0001"/>
+      <geom name="servo_mount_geom" type="box" size="0.04 0.04 0.03" pos="0 0 0.11" material="arm_grey" mass="0.15" contype="0" conaffinity="0"/>
+
+      <!-- C-shaped bracket fixed to the base around the roll servo -->
+      <geom name="roll_bracket_bridge" type="box" size="0.075 0.012 0.012" pos="0 0 0.105" material="bracket_grey" mass="0.03" contype="0" conaffinity="0"/>
+      <geom name="roll_bracket_left" type="box" size="0.012 0.012 0.047" pos="-0.063 0 0.152" material="bracket_grey" mass="0.03" contype="0" conaffinity="0"/>
+      <geom name="roll_bracket_right" type="box" size="0.012 0.012 0.047" pos="0.063 0 0.152" material="bracket_grey" mass="0.03" contype="0" conaffinity="0"/>
+
+      <!-- First 180-degree servo: shoulder roll -->
+      <body name="roll_servo" pos="0 0 0.14">
+        <joint name="shoulder_roll" type="hinge" axis="1 0 0" range="-1.5708 1.5708" damping="0.3" armature="0.01" limited="true"/>
+        <geom name="roll_servo_geom" type="box" size="0.05 0.04 0.03" material="servo_black" mass="0.2" friction="0.2 0.005 0.0001"/>
+
+        <!-- C-shaped bracket carried by the roll servo around the pitch servo -->
+        <geom name="pitch_bracket_bridge" type="box" size="0.012 0.075 0.012" pos="0 0 0.025" material="bracket_grey" mass="0.03" contype="0" conaffinity="0"/>
+        <geom name="pitch_bracket_front" type="box" size="0.012 0.012 0.047" pos="0 -0.063 0.072" material="bracket_grey" mass="0.03" contype="0" conaffinity="0"/>
+        <geom name="pitch_bracket_back" type="box" size="0.012 0.012 0.047" pos="0 0.063 0.072" material="bracket_grey" mass="0.03" contype="0" conaffinity="0"/>
+
+        <!-- Second 180-degree servo: shoulder pitch -->
+        <body name="pitch_servo" pos="0 0 0.065">
+          <joint name="shoulder_pitch" type="hinge" axis="0 1 0" range="-1.5708 1.5708" damping="0.3" armature="0.01" limited="true"/>
+          <geom name="pitch_servo_geom" type="box" size="0.04 0.05 0.03" material="servo_black" mass="0.2" friction="0.2 0.005 0.0001"/>
+
+          <!-- One rectangular arm pointing out from the base -->
+          <geom name="arm_geom" type="box" size="0.025 0.025 0.225" pos="0 0 0.225" material="arm_grey" mass="0.8" friction="0.2 0.005 0.0001"/>
+          <body name="ee_tip" pos="0 0 0.45">
+            <geom name="ee_tip_geom" type="box" size="0.04 0.04 0.025" material="arm_grey" mass="0.1" friction="2.0 0.005 0.0001"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="shoulder_roll_servo" joint="shoulder_roll" ctrlrange="-1.5708 1.5708" forcerange="-35 35" kp="40" kv="8" gear="1"/>
+    <position name="shoulder_pitch_servo" joint="shoulder_pitch" ctrlrange="-1.5708 1.5708" forcerange="-35 35" kp="40" kv="8" gear="1"/>
+  </actuator>
+</mujoco>
