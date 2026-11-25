@@ -4,15 +4,14 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 import argparse
 import time
-from pathlib import Path
 
 import mujoco.viewer
 from stable_baselines3 import PPO
 
 from pushup_env import ArmPushupEnv
+from train_rl import MODEL_PATH, require_direct_policy
 
 
-MODEL_PATH = Path(__file__).resolve().parent / "ppo_attachment_arm"
 FALLEN_DISPLAY_SECONDS = 2.0
 
 
@@ -42,8 +41,10 @@ def restart_recovery(env):
 
 
 def test_trained_model(fall_side="random"):
-    env = ArmPushupEnv()
+    env = ArmPushupEnv(domain_randomization=False)
     model = PPO.load(MODEL_PATH, env=env)
+    require_direct_policy(model)
+    print(f"Direct-control policy; simulation validation passed: {getattr(model, 'simulation_validated', False)}")
     obs, reset_info = reset_env(env, fall_side)
 
     print(f"Loaded {MODEL_PATH}.zip")
